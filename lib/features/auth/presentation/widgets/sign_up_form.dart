@@ -32,6 +32,7 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextFormField(
               controller: _emailController,
@@ -108,7 +109,7 @@ class _SignUpFormState extends State<SignUpForm> {
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 if (state is SignUpLoadingState) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
                 }
                 return ElevatedButton(
                   onPressed: () {

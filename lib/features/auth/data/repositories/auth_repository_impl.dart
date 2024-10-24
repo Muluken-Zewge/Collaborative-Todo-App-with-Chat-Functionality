@@ -41,20 +41,16 @@ class AuthRepositoryImpl implements AuthRepository {
     required String userName,
   }) async {
     try {
-      print("Repository: Attempting sign-up with email $email");
       final AuthUserModel user = await remoteDataSource.signUp(
         email: email,
         password: password,
         userName: userName,
       );
-      print("Repository: Sign-up successful");
       return Right(user); // Return the AuthUserModel as AuthUser
     } catch (e) {
-      print("Repository: Sign-up failed with error $e");
       if (e.toString().contains('email-already-in-use')) {
         return Left(ExistedAccountFailure());
       } else {
-        print(e.toString());
         return Left(ServerFailure());
       }
     }
@@ -81,6 +77,17 @@ class AuthRepositoryImpl implements AuthRepository {
       return const Right(unit); // Return success with no value
     } catch (e) {
       return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> resetPassword(String email) async {
+    try {
+      await remoteDataSource
+          .resetPassword(email); // Call the remote data source method
+      return const Right(unit); // Return success (Right) with no value
+    } catch (e) {
+      return Left(ServerFailure()); // Return failure (Left) if any error occurs
     }
   }
 }

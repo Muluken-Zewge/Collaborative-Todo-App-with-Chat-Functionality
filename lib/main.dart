@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collaborative_todo_app_with_chat_functionality/features/auth/data/datasources/firebase_auth_remote_data_source.dart';
+import 'package:collaborative_todo_app_with_chat_functionality/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:collaborative_todo_app_with_chat_functionality/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'features/auth/domain/usecases/reset_password_usecase.dart';
 import 'features/auth/domain/usecases/sign_in_usecase.dart';
 import 'features/auth/domain/usecases/sign_out_usecase.dart';
 import 'features/auth/domain/usecases/sign_up_usecase.dart';
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
         SignUp(authRepository),
         SignOut(authRepository),
         GetCurrentUser(authRepository),
+        ResetPassword(authRepository),
       )..add(AuthCheckRequested()), // Check authentication on app start
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -50,6 +53,7 @@ class MyApp extends StatelessWidget {
           '/signin': (context) => const SignInScreen(),
           '/signup': (context) => const SignUpScreen(),
           '/home': (context) => const HomeScreen(),
+          '/reset-password': (context) => const ResetPasswordPage(),
         },
       ),
     );

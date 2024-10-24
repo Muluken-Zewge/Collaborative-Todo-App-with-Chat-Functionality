@@ -54,3 +54,11 @@ class SignOutFailureState extends AuthState {
 
   const SignOutFailureState(this.failure);
 }
+
+class ResetPasswordSuccessState extends AuthState {}
+
+class ResetPasswordFailureState extends AuthState {
+  final String message;
+
+  const ResetPasswordFailureState(this.message);
+}

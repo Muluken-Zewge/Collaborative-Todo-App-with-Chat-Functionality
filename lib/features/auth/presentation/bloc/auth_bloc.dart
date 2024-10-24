@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:collaborative_todo_app_with_chat_functionality/core/error/failure.dart';
 import 'package:collaborative_todo_app_with_chat_functionality/features/auth/domain/entities/auth_user.dart';
+import 'package:collaborative_todo_app_with_chat_functionality/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
@@ -17,20 +18,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUp signUp;
   final SignOut signOutUseCase;
   final GetCurrentUser getCurrentUser;
+  final ResetPassword resetPassword;
 
-  AuthBloc(
-    this.signIn,
-    this.signUp,
-    this.signOutUseCase,
-    this.getCurrentUser,
-  ) : super(AuthInitial()) {
+  AuthBloc(this.signIn, this.signUp, this.signOutUseCase, this.getCurrentUser,
+      this.resetPassword)
+      : super(AuthInitial()) {
     on<SignInEvent>((event, emit) async {
       emit(SignInLoadingState());
       final Either<Failure, AuthUser> result = await signIn(
         email: event.email,
         password: event.password,
       );
-      print(result);
       result.fold(
         (failure) => emit(SignInFailureState(failure)),
         (user) => emit(SignInSuccessState(user)),
@@ -65,6 +63,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       userOption.fold(
         () => emit(Unauthenticated()), // No user found, emit Unauthenticated
         (user) => emit(Authenticated(user)), // User found, emit Authenticated
+      );
+    });
+
+    on<ResetPasswordEvent>((event, emit) async {
+      final Either<Failure, Unit> result = await resetPassword(event.email);
+
+      result.fold(
+        (failure) => emit(const ResetPasswordFailureState(
+            'Failed to send reset password link')),
+        (_) => emit(ResetPasswordSuccessState()),
       );
     });
   }
