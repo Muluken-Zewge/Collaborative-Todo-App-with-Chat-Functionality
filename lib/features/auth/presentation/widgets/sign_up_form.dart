@@ -1,6 +1,5 @@
 import 'package:collaborative_todo_app_with_chat_functionality/core/constants/constants.dart';
 import 'package:collaborative_todo_app_with_chat_functionality/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:collaborative_todo_app_with_chat_functionality/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +15,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _passwordController = TextEditingController();
   final _userNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,7 @@ class _SignUpFormState extends State<SignUpForm> {
             SnackBar(content: Text('Sign Up Failed: ${state.failure}')),
           );
         } else if (state is SignUpSuccessState) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+          Navigator.of(context).pushReplacementNamed('/home');
         }
       },
       child: Form(
@@ -39,12 +38,14 @@ class _SignUpFormState extends State<SignUpForm> {
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.emailAddress,
               cursorColor: kPrimaryColor,
-              decoration: const InputDecoration(
-                hintText: 'Email',
-                prefixIcon: Padding(
+              decoration: InputDecoration(
+                labelText: 'Email',
+                prefixIcon: const Padding(
                     padding: EdgeInsets.all(defaultPadding),
                     child: Icon(Icons.email)),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty || !value.contains('@')) {
@@ -59,12 +60,14 @@ class _SignUpFormState extends State<SignUpForm> {
                 controller: _userNameController,
                 textInputAction: TextInputAction.next,
                 cursorColor: kPrimaryColor,
-                decoration: const InputDecoration(
-                  hintText: 'Username',
-                  prefixIcon: Padding(
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  prefixIcon: const Padding(
                       padding: EdgeInsets.all(defaultPadding),
                       child: Icon(Icons.person)),
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -74,19 +77,26 @@ class _SignUpFormState extends State<SignUpForm> {
                 },
               ),
             ),
-            const SizedBox(height: 16),
             TextFormField(
               controller: _passwordController,
               textInputAction: TextInputAction.done,
               cursorColor: kPrimaryColor,
-              decoration: const InputDecoration(
+              obscureText: _isObscure,
+              decoration: InputDecoration(
                 labelText: 'Password',
-                prefixIcon: Padding(
+                prefixIcon: const Padding(
                     padding: EdgeInsets.all(defaultPadding),
                     child: Icon(Icons.lock)),
-                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                    onPressed: () => setState(() {
+                          _isObscure = !_isObscure;
+                        }),
+                    icon: Icon(
+                        _isObscure ? Icons.visibility_off : Icons.visibility)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
-              obscureText: true,
               validator: (value) {
                 if (value == null || value.length < 6) {
                   return 'Password must be at least 6 characters';
@@ -110,7 +120,13 @@ class _SignUpFormState extends State<SignUpForm> {
                           ));
                     }
                   },
-                  child: const Text('Sign Up'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                  ),
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 );
               },
             ),

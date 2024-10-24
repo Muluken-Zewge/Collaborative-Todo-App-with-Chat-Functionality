@@ -15,6 +15,7 @@ class _SignInFormState extends State<SignInForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +26,7 @@ class _SignInFormState extends State<SignInForm> {
             SnackBar(content: Text('Sign In Failed: ${state.failure}')),
           );
         } else if (state is SignInSuccessState) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+          Navigator.of(context).pushReplacementNamed('/home');
         }
       },
       child: Form(
@@ -38,12 +38,14 @@ class _SignInFormState extends State<SignInForm> {
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               cursorColor: kPrimaryColor,
-              decoration: const InputDecoration(
-                hintText: 'Email',
-                prefixIcon: Padding(
+              decoration: InputDecoration(
+                labelText: 'Email',
+                prefixIcon: const Padding(
                     padding: EdgeInsets.all(defaultPadding),
                     child: Icon(Icons.email)),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty || !value.contains('@')) {
@@ -57,14 +59,23 @@ class _SignInFormState extends State<SignInForm> {
               child: TextFormField(
                 controller: _passwordController,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
-                  prefixIcon: Padding(
+                obscureText: _isObscure,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: const Padding(
                       padding: EdgeInsets.all(defaultPadding),
                       child: Icon(Icons.lock)),
-                  border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                      onPressed: () => setState(() {
+                            _isObscure = !_isObscure;
+                          }),
+                      icon: Icon(_isObscure
+                          ? Icons.visibility_off
+                          : Icons.visibility)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-                obscureText: true,
                 validator: (value) {
                   if (value == null || value.length < 6) {
                     return 'Password must be at least 6 characters';
@@ -73,7 +84,6 @@ class _SignInFormState extends State<SignInForm> {
                 },
               ),
             ),
-            const SizedBox(height: defaultPadding),
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 if (state is SignInLoadingState) {
@@ -88,7 +98,13 @@ class _SignInFormState extends State<SignInForm> {
                           ));
                     }
                   },
-                  child: const Text('Sign In'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                  ),
+                  child: const Text(
+                    'Sign In',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 );
               },
             ),

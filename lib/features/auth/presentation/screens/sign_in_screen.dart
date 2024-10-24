@@ -1,5 +1,3 @@
-// lib/src/presentation/auth/screens/sign_in_screen.dart
-
 import 'package:collaborative_todo_app_with_chat_functionality/features/auth/presentation/widgets/background.dart';
 import 'package:collaborative_todo_app_with_chat_functionality/features/auth/presentation/widgets/responsive.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +9,13 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Background(
-      child: SingleChildScrollView(
-        child: Responsive(
-          mobile: MobileLoginScreen(),
+    return const Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: Background(
+        child: SingleChildScrollView(
+          child: Responsive(
+            mobile: MobileLoginScreen(),
+          ),
         ),
       ),
     );
@@ -28,40 +29,43 @@ class MobileLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min, // Set the main axis size to minimum
-      children: <Widget>[
-        // Use Flexible instead of Expanded to avoid layout issues
-        Flexible(
-          flex: 8,
-          fit: FlexFit.loose, // Use FlexFit.loose to avoid over-expanding
-          child: SvgPicture.asset("assets/icons/login.svg"),
-        ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SignInForm(), // Place the SignInForm widget here without Expanded
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Flexible(
+              flex: 8,
+              fit: FlexFit.loose,
+              child: SvgPicture.asset("assets/icons/login.svg"),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account?"),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/signup');
-                    },
-                    child: const Text('Sign Up'),
+                  const SignInForm(),
+                  const SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?"),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed('/signup');
+                        },
+                        child: const Text('Sign Up'),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

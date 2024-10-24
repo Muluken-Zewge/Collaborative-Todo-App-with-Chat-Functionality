@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
         GetCurrentUser(authRepository),
       )..add(AuthCheckRequested()), // Check authentication on app start
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: const AuthNavigator(),
         routes: {
           '/signin': (context) => const SignInScreen(),
@@ -62,12 +63,23 @@ class AuthNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is Authenticated) {
+        if (state is Authenticated || state is SignInSuccessState) {
           return const HomeScreen();
         } else if (state is Unauthenticated || state is AuthInitial) {
           return const SignInScreen();
         } else {
-          return const CircularProgressIndicator();
+          return const Center(
+            child: SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: Colors.white),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ),
+          );
         }
       },
     );

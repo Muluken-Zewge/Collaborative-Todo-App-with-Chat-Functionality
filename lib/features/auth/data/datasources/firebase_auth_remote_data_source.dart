@@ -19,7 +19,18 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
         email: email,
         password: password,
       );
-      return AuthUserModel.fromFirebaseUser(userCredential.user);
+      final userDoc = await _firestore
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      if (!userDoc.exists) {
+        throw Exception('User data not found in Firestore');
+      }
+      return AuthUserModel(
+          id: userCredential.user!.uid,
+          email: userCredential.user!.email ?? email,
+          userName: userDoc.data()?['userName'] ?? '',
+          displayName: userCredential.user!.displayName ?? '');
     } catch (e) {
       throw Exception('Error signing in: $e');
     }
@@ -43,11 +54,14 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
         'userName': userName,
         'displayName': userName,
       });
-
       // Update the Firebase user's display name
       await userCredential.user!.updateDisplayName(userName);
 
-      return AuthUserModel.fromFirebaseUser(userCredential.user);
+      return AuthUserModel(
+          id: userCredential.user!.uid,
+          email: email,
+          userName: userName,
+          displayName: userName);
     } catch (e) {
       throw Exception('Error signing up: $e');
     }

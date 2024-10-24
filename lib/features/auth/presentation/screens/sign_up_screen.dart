@@ -11,10 +11,12 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Background(
-      child: SingleChildScrollView(
-        child: Responsive(
-          mobile: MobileSignupScreen(),
+    return const Scaffold(
+      body: Background(
+        child: SingleChildScrollView(
+          child: Responsive(
+            mobile: MobileSignupScreen(),
+          ),
         ),
       ),
     );
@@ -26,40 +28,43 @@ class MobileSignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min, // Set the main axis size to minimum
-      children: <Widget>[
-        // Use Flexible instead of Expanded to avoid layout issues
-        Flexible(
-          flex: 8,
-          fit: FlexFit.loose, // Use FlexFit.loose to avoid over-expanding
-          child: SvgPicture.asset("assets/icons/signup.svg"),
-        ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SignUpForm(), // Place the SignInForm widget here without Expanded
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Flexible(
+              flex: 8,
+              fit: FlexFit.loose,
+              child: SvgPicture.asset("assets/icons/signup.svg"),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text("Already have an account?"),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/signin');
-                    },
-                    child: const Text('Sign In'),
+                  const SignUpForm(),
+                  const SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Already have an account?"),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed('/signin');
+                        },
+                        child: const Text('Sign In'),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

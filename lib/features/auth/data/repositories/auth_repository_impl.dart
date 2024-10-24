@@ -41,16 +41,20 @@ class AuthRepositoryImpl implements AuthRepository {
     required String userName,
   }) async {
     try {
+      print("Repository: Attempting sign-up with email $email");
       final AuthUserModel user = await remoteDataSource.signUp(
         email: email,
         password: password,
         userName: userName,
       );
+      print("Repository: Sign-up successful");
       return Right(user); // Return the AuthUserModel as AuthUser
     } catch (e) {
+      print("Repository: Sign-up failed with error $e");
       if (e.toString().contains('email-already-in-use')) {
         return Left(ExistedAccountFailure());
       } else {
+        print(e.toString());
         return Left(ServerFailure());
       }
     }

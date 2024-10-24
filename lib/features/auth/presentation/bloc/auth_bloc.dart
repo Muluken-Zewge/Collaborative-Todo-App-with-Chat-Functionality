@@ -30,6 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
+      print(result);
       result.fold(
         (failure) => emit(SignInFailureState(failure)),
         (user) => emit(SignInSuccessState(user)),
@@ -43,10 +44,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
         userName: event.userName,
       );
-      result.fold(
-        (failure) => emit(SignUpFailureState(failure)),
-        (user) => emit(SignUpSuccessState(user)),
-      );
+      result.fold((failure) {
+        emit(SignUpFailureState(failure));
+      }, (user) {
+        emit(SignUpSuccessState(user));
+      });
     });
 
     on<SignOutEvent>((event, emit) async {
