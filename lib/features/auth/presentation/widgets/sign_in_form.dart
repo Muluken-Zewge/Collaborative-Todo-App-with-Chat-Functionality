@@ -20,11 +20,7 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is SignInFailureState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Sign In Failed: ${state.failure}')),
-          );
-        } else if (state is SignInSuccessState) {
+        if (state is SignInSuccessState) {
           Navigator.of(context).pushReplacementNamed('/home');
         }
       },

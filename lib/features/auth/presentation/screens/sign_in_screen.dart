@@ -1,6 +1,8 @@
+import 'package:collaborative_todo_app_with_chat_functionality/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:collaborative_todo_app_with_chat_functionality/features/auth/presentation/widgets/background.dart';
 import 'package:collaborative_todo_app_with_chat_functionality/features/auth/presentation/widgets/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../widgets/sign_in_form.dart';
 
@@ -9,14 +11,24 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Background(
-        child: SingleChildScrollView(
-          child: Responsive(
-            mobile: MobileLoginScreen(),
-          ),
-        ),
+      body: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          return Stack(children: [
+            const Background(
+              child: SingleChildScrollView(
+                child: Responsive(
+                  mobile: MobileLoginScreen(),
+                ),
+              ),
+            ),
+            if (state is SignInLoadingState)
+              Container(
+                color: Colors.black.withOpacity(0.5),
+              ),
+          ]);
+        },
       ),
     );
   }

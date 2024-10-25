@@ -65,26 +65,25 @@ class AuthNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is SignInFailureState) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Sign In Failed: ${state.failure}')),
+            );
+          });
+        }
+      },
       builder: (context, state) {
         if (state is Authenticated || state is SignInSuccessState) {
           return const HomeScreen();
         } else if (state is Unauthenticated || state is AuthInitial) {
           return const SignInScreen();
-        } else {
-          return const Center(
-            child: SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: DecoratedBox(
-                decoration: BoxDecoration(color: Colors.white),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ),
-          );
+        } else if (state is SignInFailureState) {
+          return const SignInScreen();
         }
+        return const SignInScreen();
       },
     );
   }

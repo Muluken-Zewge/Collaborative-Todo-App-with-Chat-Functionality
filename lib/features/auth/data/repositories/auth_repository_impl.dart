@@ -22,12 +22,10 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return Right(user); // Return the AuthUserModel as AuthUser
     } catch (e) {
-      if (e.toString().contains('network')) {
+      if (e.toString().contains('network error')) {
         return Left(OfflineFailure());
-      } else if (e.toString().contains('wrong-password')) {
-        return Left(WrongPasswordFailure());
-      } else if (e.toString().contains('user-not-found')) {
-        return Left(NoUserFailure());
+      } else if (e.toString().contains('auth credential is incorrect')) {
+        return Left(InCorrectCredential());
       } else {
         return Left(ServerFailure());
       }
@@ -49,7 +47,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(user); // Return the AuthUserModel as AuthUser
     } catch (e) {
       if (e.toString().contains('email-already-in-use')) {
-        return Left(ExistedAccountFailure());
+        return Left(AccountExisted());
+      } else if (e.toString().contains('network error')) {
+        return Left(OfflineFailure());
       } else {
         return Left(ServerFailure());
       }
