@@ -77,7 +77,7 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: kPrimaryColor,
+                    backgroundColor: primaryColor,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 40, vertical: 12),
                     shape: RoundedRectangleBorder(

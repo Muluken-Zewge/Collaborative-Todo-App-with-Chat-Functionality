@@ -38,7 +38,7 @@ class _SignUpFormState extends State<SignUpForm> {
               controller: _emailController,
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.emailAddress,
-              cursorColor: kPrimaryColor,
+              cursorColor: primaryColor,
               decoration: InputDecoration(
                 labelText: 'Email',
                 prefixIcon: const Padding(
@@ -60,7 +60,7 @@ class _SignUpFormState extends State<SignUpForm> {
               child: TextFormField(
                 controller: _userNameController,
                 textInputAction: TextInputAction.next,
-                cursorColor: kPrimaryColor,
+                cursorColor: primaryColor,
                 decoration: InputDecoration(
                   labelText: 'Username',
                   prefixIcon: const Padding(
@@ -71,8 +71,8 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a username';
+                  if (value == null || value.length < 2) {
+                    return 'User name must be at least two characters';
                   }
                   return null;
                 },
@@ -81,7 +81,7 @@ class _SignUpFormState extends State<SignUpForm> {
             TextFormField(
               controller: _passwordController,
               textInputAction: TextInputAction.done,
-              cursorColor: kPrimaryColor,
+              cursorColor: primaryColor,
               obscureText: _isObscure,
               decoration: InputDecoration(
                 labelText: 'Password',
@@ -122,7 +122,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: kPrimaryColor,
+                    backgroundColor: primaryColor,
                   ),
                   child: const Text(
                     'Sign Up',

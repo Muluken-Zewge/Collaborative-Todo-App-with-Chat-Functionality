@@ -21,7 +21,8 @@ class _SignInFormState extends State<SignInForm> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is SignInSuccessState) {
-          Navigator.of(context).pushReplacementNamed('/home');
+          Navigator.of(context).pushReplacementNamed('/home',
+              arguments: {'authUser': state.user});
         }
       },
       child: Form(
@@ -33,7 +34,7 @@ class _SignInFormState extends State<SignInForm> {
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
-              cursorColor: kPrimaryColor,
+              cursorColor: primaryColor,
               decoration: InputDecoration(
                 labelText: 'Email',
                 prefixIcon: const Padding(
@@ -106,7 +107,7 @@ class _SignInFormState extends State<SignInForm> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: kPrimaryColor,
+                    backgroundColor: primaryColor,
                   ),
                   child: const Text(
                     'Sign In',
