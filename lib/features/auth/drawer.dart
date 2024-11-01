@@ -2,7 +2,6 @@ import 'package:collaborative_todo_app_with_chat_functionality/features/auth/pre
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/constants/constants.dart';
 import 'domain/entities/auth_user.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -36,7 +35,10 @@ class CustomDrawer extends StatelessWidget {
                         backgroundColor: Colors.lightBlue,
                         radius: 34,
                         child: Text(
-                          '${authUser.displayName?.substring(0, 2)}',
+                          authUser.displayName != null &&
+                                  authUser.displayName!.length >= 2
+                              ? authUser.displayName!.substring(0, 2)
+                              : 'NA',
                           style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w300,

@@ -26,7 +26,8 @@ class _SignUpFormState extends State<SignUpForm> {
             SnackBar(content: Text('Sign Up Failed: ${state.failure}')),
           );
         } else if (state is SignUpSuccessState) {
-          Navigator.of(context).pushReplacementNamed('/home');
+          Navigator.of(context).pushReplacementNamed('/home',
+              arguments: {'authUser': state.user});
         }
       },
       child: Form(
