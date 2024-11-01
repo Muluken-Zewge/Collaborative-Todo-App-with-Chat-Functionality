@@ -139,7 +139,7 @@ class _PrivateChatDetailPageState extends State<PrivateChatDetailPage> {
                             child: Text("Error occured fetching message"));
                       } else {
                         return const Center(
-                            child: Text('dont know what happened man'));
+                            child: Text('Unexpected Error Ocuured'));
                       }
                     },
                   ),

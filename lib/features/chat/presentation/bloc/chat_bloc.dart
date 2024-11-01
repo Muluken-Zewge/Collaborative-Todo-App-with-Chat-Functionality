@@ -68,13 +68,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       final result = await fetchMessages(event.chatId);
       result.fold(
         (failure) {
-          print("Error fetching fuck messages: ${failure}");
-
           emit(ChatError(_mapFailureToMessage(failure)));
         },
         (messages) {
           emit(MessageLoaded(messages));
-          print(messages);
         },
       );
     });
@@ -91,7 +88,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       final result = await setUserPresence(event.userId, event.isOnline);
       result.fold(
         (failure) => emit(ChatError(_mapFailureToMessage(failure))),
-        (_) => null, // No additional state needed on success
+        (_) => null,
       );
     });
 
