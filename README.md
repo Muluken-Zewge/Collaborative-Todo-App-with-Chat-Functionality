@@ -20,10 +20,10 @@ This app allows users to manage tasks and communicate in real-time, combining pr
 ### Chat Features
 
 - **Real-time Messaging**: Chat with other users in real-time using Firebase.
-- **Private and Group Chats:**: Engage in both one-on-one and group conversations.
+- **Private and Group Chats**: Engage in both one-on-one and group conversations.
 - **User Presence**: See online status indicators for active users in chat.
 - **Media Sharing**: Send images, text, and audio messages in chats.
-- **Message Search:**: Quickly find messages using a keyword search in both private and group chats.
+- **Message Search**: Quickly find messages using a keyword search in both private and group chats.
 
 ## Teck Stack
 
